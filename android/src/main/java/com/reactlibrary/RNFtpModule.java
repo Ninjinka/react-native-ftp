@@ -188,6 +188,20 @@ public class RNFtpModule extends ReactContextBaseJavaModule {
     }).start();
   }
 
+  @ReactMethod
+  public void renameFile(final String path, final String newPath, final Promise promise){
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        try {
+          client.rename(path, newPath);
+          promise.resolve(true);
+        } catch (IOException e) {
+          promise.reject("ERROR",e.getMessage());
+        }
+      }
+    }).start();
+  }
 
   @ReactMethod
   public void downloadFile(final String remoteFile1,final String localDestinationDir, final Promise promise){
